@@ -1,93 +1,32 @@
 {
   "version": 1,
   "projects": {
-    "api": {
-      "root": "apps/api",
-      "sourceRoot": "apps/api/src",
+    "brewdude-io": {
       "projectType": "application",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
-          "options": {
-            "outputPath": "dist/apps/api",
-            "main": "apps/api/src/main.ts",
-            "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": ["apps/api/src/assets"]
-          },
-          "configurations": {
-            "production": {
-              "optimization": true,
-              "extractLicenses": true,
-              "inspect": false,
-              "fileReplacements": [
-                {
-                  "replace": "apps/api/src/environments/environment.ts",
-                  "with": "apps/api/src/environments/environment.prod.ts"
-                }
-              ]
-            }
-          }
-        },
-        "serve": {
-          "builder": "@nrwl/node:execute",
-          "options": {
-            "buildTarget": "api:build"
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
-          "options": {
-            "lintFilePatterns": ["apps/api/**/*.ts"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/api"],
-          "options": {
-            "jestConfig": "apps/api/jest.config.js",
-            "passWithNoTests": true
-          }
-        }
-      },
-      "tags": []
-    },
-    "api-interfaces": {
-      "root": "libs/api-interfaces",
-      "sourceRoot": "libs/api-interfaces/src",
-      "projectType": "library",
-      "architect": {
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
-          "options": {
-            "lintFilePatterns": ["libs/api-interfaces/**/*.ts"]
-          }
-        }
-      },
-      "tags": []
-    },
-    "brewdude-web": {
-      "projectType": "application",
-      "root": "apps/brewdude-web",
-      "sourceRoot": "apps/brewdude-web/src",
-      "prefix": "brewdude",
+      "root": "apps/brewdude-io",
+      "sourceRoot": "apps/brewdude-io/src",
+      "prefix": "brewdude-io",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/apps/brewdude-web",
-            "index": "apps/brewdude-web/src/index.html",
-            "main": "apps/brewdude-web/src/main.ts",
-            "polyfills": "apps/brewdude-web/src/polyfills.ts",
-            "tsConfig": "apps/brewdude-web/tsconfig.app.json",
+            "outputPath": "dist/apps/brewdude-io",
+            "index": "apps/brewdude-io/src/index.html",
+            "main": "apps/brewdude-io/src/main.ts",
+            "polyfills": "apps/brewdude-io/src/polyfills.ts",
+            "tsConfig": "apps/brewdude-io/tsconfig.app.json",
             "assets": [
-              "apps/brewdude-web/src/favicon.ico",
-              "apps/brewdude-web/src/assets"
+              "apps/brewdude-io/src/favicon.ico",
+              "apps/brewdude-io/src/assets",
+              "apps/brewdude-io/src/site.webmanifest",
+              "apps/brewdude-io/src/android-chrome-192x192.png",
+              "apps/brewdude-io/src/android-chrome-512x512.png",
+              "apps/brewdude-io/src/apple-touch-icon.png",
+              "apps/brewdude-io/src/favicon-16x16.ico",
+              "apps/brewdude-io/src/favicon-32x32.ico"
             ],
-            "styles": ["apps/brewdude-web/src/styles.css"],
+            "styles": ["apps/brewdude-io/src/styles.css"],
             "scripts": []
           },
           "configurations": {
@@ -106,8 +45,8 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "apps/brewdude-web/src/environments/environment.ts",
-                  "with": "apps/brewdude-web/src/environments/environment.prod.ts"
+                  "replace": "apps/brewdude-io/src/environments/environment.ts",
+                  "with": "apps/brewdude-io/src/environments/environment.prod.ts"
                 }
               ],
               "outputHashing": "all"
@@ -127,57 +66,109 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "brewdude-web:build:production"
+              "browserTarget": "brewdude-io:build:production"
             },
             "development": {
-              "browserTarget": "brewdude-web:build:development"
+              "browserTarget": "brewdude-io:build:development"
             }
           },
           "defaultConfiguration": "development",
           "options": {
-            "proxyConfig": "apps/brewdude-web/proxy.conf.json"
+            "proxyConfig": "apps/brewdude-io/proxy.conf.json"
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "brewdude-web:build"
+            "browserTarget": "brewdude-io:build"
           }
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "apps/brewdude-web/src/**/*.ts",
-              "apps/brewdude-web/src/**/*.html"
+              "apps/brewdude-io/src/**/*.ts",
+              "apps/brewdude-io/src/**/*.html"
             ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/brewdude-web"],
+          "outputs": ["coverage/apps/brewdude-io"],
           "options": {
-            "jestConfig": "apps/brewdude-web/jest.config.js",
+            "jestConfig": "apps/brewdude-io/jest.config.js",
             "passWithNoTests": true
           }
         }
       },
-      "tags": []
+      "tags": ["scope:brewdude-io"]
     },
-    "brewdude-web-e2e": {
-      "root": "apps/brewdude-web-e2e",
-      "sourceRoot": "apps/brewdude-web-e2e/src",
+    "brewdude-io-api": {
+      "root": "apps/brewdude-io-api",
+      "sourceRoot": "apps/brewdude-io-api/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/brewdude-io-api",
+            "main": "apps/brewdude-io-api/src/main.ts",
+            "tsConfig": "apps/brewdude-io-api/tsconfig.app.json",
+            "assets": ["apps/brewdude-io-api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/brewdude-io-api/src/environments/environment.ts",
+                  "with": "apps/brewdude-io-api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "brewdude-io-api:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/brewdude-io-api/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/brewdude-io-api"],
+          "options": {
+            "jestConfig": "apps/brewdude-io-api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["scope:brewdude-io-api"]
+    },
+    "brewdude-io-e2e": {
+      "root": "apps/brewdude-io-e2e",
+      "sourceRoot": "apps/brewdude-io-e2e/src",
       "projectType": "application",
       "architect": {
         "e2e": {
           "builder": "@nrwl/cypress:cypress",
           "options": {
-            "cypressConfig": "apps/brewdude-web-e2e/cypress.json",
-            "devServerTarget": "brewdude-web:serve:development"
+            "cypressConfig": "apps/brewdude-io-e2e/cypress.json",
+            "devServerTarget": "brewdude-io:serve:development"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "brewdude-web:serve:production"
+              "devServerTarget": "brewdude-io:serve:production"
             }
           }
         },
@@ -185,12 +176,159 @@
           "builder": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": ["apps/brewdude-web-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": ["apps/brewdude-io-e2e/**/*.{js,ts}"]
           }
         }
       },
       "tags": [],
-      "implicitDependencies": ["brewdude-web"]
+      "implicitDependencies": ["brewdude-io"]
+    },
+    "brewdude-io-features-settings": {
+      "projectType": "library",
+      "root": "libs/brewdude-io/features/settings",
+      "sourceRoot": "libs/brewdude-io/features/settings/src",
+      "prefix": "brewdude-io",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/brewdude-io/features/settings"],
+          "options": {
+            "jestConfig": "libs/brewdude-io/features/settings/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/brewdude-io/features/settings/src/**/*.ts",
+              "libs/brewdude-io/features/settings/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": ["scope:brewdude-io-features-settings"]
+    },
+    "brewdude-io-shared-types": {
+      "root": "libs/brewdude-io/shared/types",
+      "sourceRoot": "libs/brewdude-io/shared/types/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/brewdude-io/shared/types/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/brewdude-io/shared/types"],
+          "options": {
+            "jestConfig": "libs/brewdude-io/shared/types/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["scope:brewdude-io-shared-types"]
+    },
+    "brewdude-io-shared-utilities": {
+      "root": "libs/brewdude-io/shared/utilities",
+      "sourceRoot": "libs/brewdude-io/shared/utilities/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/brewdude-io/shared/utilities/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/brewdude-io/shared/utilities"],
+          "options": {
+            "jestConfig": "libs/brewdude-io/shared/utilities/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["scope:brewdude-io-shared-utilities"]
+    },
+    "brewdude-io-ui-components": {
+      "projectType": "library",
+      "root": "libs/brewdude-io/ui/components",
+      "sourceRoot": "libs/brewdude-io/ui/components/src",
+      "prefix": "brewdude-io",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/brewdude-io/ui/components"],
+          "options": {
+            "jestConfig": "libs/brewdude-io/ui/components/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/brewdude-io/ui/components/src/**/*.ts",
+              "libs/brewdude-io/ui/components/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "brewdude-io-ui-pages": {
+      "projectType": "library",
+      "root": "libs/brewdude-io/ui/pages",
+      "sourceRoot": "libs/brewdude-io/ui/pages/src",
+      "prefix": "brewdude-io",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/brewdude-io/ui/pages"],
+          "options": {
+            "jestConfig": "libs/brewdude-io/ui/pages/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/brewdude-io/ui/pages/src/**/*.ts",
+              "libs/brewdude-io/ui/pages/src/**/*.html"
+            ]
+          }
+        }
+      },
+      "tags": []
+    },
+    "global-types": {
+      "root": "libs/global/types",
+      "sourceRoot": "libs/global/types/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/global/types/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/global/types"],
+          "options": {
+            "jestConfig": "libs/global/types/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["scope:global-types"]
     }
   }
 }

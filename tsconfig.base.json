@@ -15,7 +15,22 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@brewdude/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+      "@brewdude/brewdude-io/features/settings": [
+        "libs/brewdude-io/features/settings/src/index.ts"
+      ],
+      "@brewdude/brewdude-io/shared/types": [
+        "libs/brewdude-io/shared/types/src/index.ts"
+      ],
+      "@brewdude/brewdude-io/shared/utilities": [
+        "libs/brewdude-io/shared/utilities/src/index.ts"
+      ],
+      "@brewdude/brewdude-io/ui/components": [
+        "libs/brewdude-io/ui/components/src/index.ts"
+      ],
+      "@brewdude/brewdude-io/ui/pages": [
+        "libs/brewdude-io/ui/pages/src/index.ts"
+      ],
+      "@brewdude/global/types": ["libs/global/types/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
