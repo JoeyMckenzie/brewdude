@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "types": ["node"],
+    "emitDecoratorMetadata": true,
+    "target": "es6",
+    "module": "commonjs",
+    "importHelpers": false,
+    "allowJs": true // Fixes combination of .js and .ts files
+  },
+  "exclude": ["**/*.spec.ts"],
+  "include": ["**/*.ts"]
+}

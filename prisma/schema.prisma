@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Address {
+  id                     Int      @id @default(autoincrement())
+  createdAt              DateTime @default(now()) @map("created_at")
+  updatedAt              DateTime @updatedAt @map("updated_at")
+  streetAddress          String   @map("street_address")
+  streetAddressExtended String?  @map("street_address_extended")
+  city                   String   @db.VarChar(255)
+  state                  String   @db.VarChar(2)
+  zipCode                String   @map("zip_code") @db.VarChar(5)
+  zipCodeExtension       String?  @map("zip_code_extension") @db.VarChar(5)
+  brewery                Brewery?
+
+  @@map("addresses")
+}
+
+model Brewery {
+  id          Int          @id @default(autoincrement())
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  name        String       @db.VarChar(255)
+  addressId   Int          @unique @map("address_id")
+  address     Address      @relation(fields: [addressId], references: [id])
+  beers       Beer[]
+  breweryTags BreweryTag[]
+
+  @@map("breweries")
+}
+
+model Beer {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  name      String    @db.VarChar(255)
+  ibu       Int
+  abv       Decimal
+  breweryId Int       @map("brewery_id")
+  brewery   Brewery   @relation(fields: [breweryId], references: [id])
+  beerTags  BeerTag[]
+  style BeerStyle
+
+  @@map("beers")
+}
+
+model BeerTag {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  tag       VoteTag
+  beerId    Int      @map("beer_id")
+  beer      Beer     @relation(fields: [beerId], references: [id])
+
+  @@map("beer_tags")
+}
+
+model BreweryTag {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  tag       VoteTag
+  breweryId Int      @map("beer_id")
+  brewery   Brewery  @relation(fields: [breweryId], references: [id])
+
+  @@map("brewery_tags")
+}
+
+enum VoteTag {
+  Upvote
+  Downvote
+
+  @@map("vote_tag")
+}
+
+// Note: keep this in sync with beers/enums.ts
+enum BeerStyle {
+  Lager @map("LAGER")
+  PaleAle @map("PALE_ALE")
+  Ipa @map("IPA")
+  DoubleIpa @map("DOUBLE_IPA")
+  TripleIpa @map("TRIPLE_IPA")
+  AmberAle @map("AMBER_ALE")
+  Stout @map("STOUT")
+
+  @@map("beer_style")
+}

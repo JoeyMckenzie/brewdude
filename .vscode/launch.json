@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "brewdude-io-api",
+      "type": "node",
+      "request": "launch",
+      "args": ["${workspaceFolder}/apps/brewdude-io-api/src/main.ts"], // Path to main entry file
+      "runtimeArgs": [
+        "--require",
+        "ts-node/register",
+        "--require",
+        "tsconfig-paths/register",
+        "--experimental-modules"
+      ],
+      "cwd": "${workspaceRoot}",
+      "internalConsoleOptions": "openOnSessionStart",
+      "env": {
+        "NODE_ENV": "local",
+        "NODE_PORT": "8000",
+        "TS_NODE_PROJECT": "tsconfig.debug.json", // Specify the tsconfig to use. See content of it below.
+        "IS_DEBUG_MODE": "true" // Custom env variable to detect debug mode
+      },
+      "sourceMaps": true,
+      "console": "internalConsole",
+      "outputCapture": "std",
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**" // Disable the "could not read source map" error for node_modules
+      ]
+    }
+  ]
+}

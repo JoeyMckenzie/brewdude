@@ -155,6 +155,102 @@
       },
       "tags": ["scope:brewdude-io-api"]
     },
+    "brewdude-io-api-features-beers": {
+      "root": "libs/brewdude-io-api/features/beers",
+      "sourceRoot": "libs/brewdude-io-api/features/beers/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/brewdude-io-api/features/beers/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/brewdude-io-api/features/beers"],
+          "options": {
+            "jestConfig": "libs/brewdude-io-api/features/beers/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["scope:brewdude-io-api-features-beers"]
+    },
+    "brewdude-io-api-features-breweries": {
+      "root": "libs/brewdude-io-api/features/breweries",
+      "sourceRoot": "libs/brewdude-io-api/features/breweries/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": [
+              "libs/brewdude-io-api/features/breweries/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/brewdude-io-api/features/breweries"],
+          "options": {
+            "jestConfig": "libs/brewdude-io-api/features/breweries/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["scope:brewdude-io-api-features-beers"]
+    },
+    "brewdude-io-api-shared-services": {
+      "root": "libs/brewdude-io-api/shared/services",
+      "sourceRoot": "libs/brewdude-io-api/shared/services/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/brewdude-io-api/shared/services/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/brewdude-io-api/shared/services"],
+          "options": {
+            "jestConfig": "libs/brewdude-io-api/shared/services/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["scope:brewdude-io-api-shared-services"]
+    },
+    "brewdude-io-api-shared-validation": {
+      "root": "libs/brewdude-io-api/shared/validation",
+      "sourceRoot": "libs/brewdude-io-api/shared/validation/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": [
+              "libs/brewdude-io-api/shared/validation/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/brewdude-io-api/shared/validation"],
+          "options": {
+            "jestConfig": "libs/brewdude-io-api/shared/validation/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "brewdude-io-e2e": {
       "root": "apps/brewdude-io-e2e",
       "sourceRoot": "apps/brewdude-io-e2e/src",
@@ -329,6 +425,29 @@
         }
       },
       "tags": ["scope:global-types"]
+    },
+    "global-utilities": {
+      "root": "libs/global/utilities",
+      "sourceRoot": "libs/global/utilities/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/global/utilities/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/global/utilities"],
+          "options": {
+            "jestConfig": "libs/global/utilities/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
     }
   }
 }

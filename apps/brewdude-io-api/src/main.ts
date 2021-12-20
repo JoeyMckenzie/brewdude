@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { catchError, EMPTY, exhaustMap, firstValueFrom, from, map } from 'rxjs';
 
@@ -11,10 +11,11 @@ import { AppModule } from './app/app.module';
 
 const bootstrapObservable = from(NestFactory.create(AppModule)).pipe(
   exhaustMap((app) => {
-    const globalPrefix = 'api';
+    const globalPrefix = 'api/v1';
     const port = process.env.PORT || 3333;
 
     app.setGlobalPrefix(globalPrefix);
+    app.useGlobalPipes(new ValidationPipe());
 
     return from(app.listen(port)).pipe(
       map(() =>
