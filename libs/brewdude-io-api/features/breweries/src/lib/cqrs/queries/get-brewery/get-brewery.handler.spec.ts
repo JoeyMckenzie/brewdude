@@ -25,7 +25,7 @@ describe(GetBreweryQueryHandler.name, () => {
     prismaService = moduleRef.get<PrismaService>(PrismaService);
     handler = moduleRef.get<GetBreweryQueryHandler>(GetBreweryQueryHandler);
 
-    jest.spyOn(prismaService, '$connect');
+    jest.spyOn(prismaService, '$connect').mockResolvedValue();
   });
 
   it('should return a brewery if one is found from the service', () => {

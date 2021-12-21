@@ -6,8 +6,8 @@ import {
 } from '@brewdude/brewdude-io-api/shared/services';
 import { BreweryService } from './brewery.service';
 import {
-  CreateAddressRequest,
-  CreateBreweryRequest,
+  UpsertAddressRequest,
+  UpsertBreweryRequest,
 } from '@brewdude/global/types';
 
 describe(BreweryService.name, () => {
@@ -22,17 +22,19 @@ describe(BreweryService.name, () => {
 
     service = moduleRef.get<BreweryService>(BreweryService);
     prismaService = moduleRef.get<PrismaService>(PrismaService);
+
+    jest.spyOn(prismaService, '$connect').mockResolvedValue();
   });
 
   describe('creating a brewery', () => {
-    const addressRequest = new CreateAddressRequest(
+    const addressRequest = new UpsertAddressRequest(
       'mock street address',
       'mock city',
       'mock state',
       'mock zip code'
     );
 
-    const breweryRequest = new CreateBreweryRequest(
+    const breweryRequest = new UpsertBreweryRequest(
       'Fall River Brewery',
       addressRequest
     );
@@ -49,27 +51,12 @@ describe(BreweryService.name, () => {
           updatedAt: new Date(),
         });
 
-      const prismaFindFirstSpy = jest
-        .spyOn(prismaService.address, 'findFirst')
-        .mockResolvedValue({
-          id: 1,
-          streetAddress: 'mock address',
-          city: 'mock city',
-          state: 'mock state',
-          zipCode: 'mock zip code',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          streetAddressExtended: '',
-          zipCodeExtension: '',
-        });
-
       // Act
       service
         .createBrewery(breweryRequest, new Date())
         .subscribe((response) => {
           // Assert
           expect(prismaCreateSpy).toHaveBeenCalledTimes(1);
-          expect(prismaFindFirstSpy).toHaveBeenCalledTimes(1);
           expect(response).not.toBeNull();
           expect(response).not.toBeUndefined();
         });
@@ -81,15 +68,12 @@ describe(BreweryService.name, () => {
         .spyOn(prismaService.brewery, 'create')
         .mockRejectedValue('Error');
 
-      const prismaFindFirstSpy = jest.spyOn(prismaService.address, 'findFirst');
-
       // Act
       service
         .createBrewery(breweryRequest, new Date())
         .subscribe((response) => {
           // Assert
           expect(prismaCreateSpy).toHaveBeenCalledTimes(1);
-          expect(prismaFindFirstSpy).not.toHaveBeenCalled();
           expect(response).toBeUndefined();
         });
     });

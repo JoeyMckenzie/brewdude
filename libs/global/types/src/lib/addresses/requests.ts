@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class CreateAddressRequest {
+export class UpsertAddressRequest {
   @IsNotEmpty()
   streetAddress: string;
 

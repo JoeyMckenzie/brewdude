@@ -8,7 +8,6 @@ import {
 import { EMPTY, from } from 'rxjs';
 import { GetBreweriesQueryHandler } from './get-breweries.handler';
 import { GetBreweriesQuery } from './get-breweries.query';
-import { Prisma } from '@prisma/client';
 
 describe(GetBreweriesQueryHandler.name, () => {
   let handler: GetBreweriesQueryHandler;
@@ -25,7 +24,7 @@ describe(GetBreweriesQueryHandler.name, () => {
     prismaService = moduleRef.get<PrismaService>(PrismaService);
     handler = moduleRef.get<GetBreweriesQueryHandler>(GetBreweriesQueryHandler);
 
-    jest.spyOn(prismaService, '$connect');
+    jest.spyOn(prismaService, '$connect').mockResolvedValue();
   });
 
   it('should return a brewery if one is found from the service', () => {
@@ -33,13 +32,11 @@ describe(GetBreweriesQueryHandler.name, () => {
     const getSpy = jest.spyOn(breweryService, 'getBrewery');
 
     // Act
-    from(handler.execute(new GetBreweryQuery('1'))).subscribe((response) => {
+    from(handler.execute(new GetBreweriesQuery())).subscribe((response) => {
       // Assert
       expect(getSpy).toHaveBeenCalledTimes(1);
       expect(response).not.toBeNull();
       expect(response).not.toBeUndefined();
-      expect(response.brewery).not.toBeNull();
-      expect(response.brewery).not.toBeUndefined();
     });
   });
 
@@ -50,12 +47,10 @@ describe(GetBreweriesQueryHandler.name, () => {
       .mockReturnValue(EMPTY);
 
     // Act
-    from(handler.execute(new GetBreweryQuery('1'))).subscribe({
+    from(handler.execute(new GetBreweriesQuery())).subscribe({
       error: () => {
         expect(getSpy).toHaveBeenCalledTimes(1);
       },
     });
   });
-
-  // it('should throw a bad request error if ID is unable to be parsed', async () => {});
 });

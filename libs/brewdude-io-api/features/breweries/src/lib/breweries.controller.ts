@@ -1,5 +1,5 @@
 import {
-  CreateBreweryRequest,
+  UpsertBreweryRequest,
   BreweryResponse,
   BreweryListResponse,
   SortOrder,
@@ -19,7 +19,7 @@ export class BreweriesController {
 
   @Post()
   createBrewery(
-    @Body() request: CreateBreweryRequest
+    @Body() request: UpsertBreweryRequest
   ): Observable<BreweryResponse> {
     this.logger.log('Request received to create brewery...');
     return from(this.commandBus.execute(new CreateBreweryCommand(request)));

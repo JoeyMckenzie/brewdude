@@ -3,11 +3,14 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { handlers } from '../..';
 import { BreweryService } from '../../../services/brewery.service';
 import { CreateBreweryCommandHandler } from './create-brewery.handler';
-import { BrewdudeIoApiSharedServicesModule } from '@brewdude/brewdude-io-api/shared/services';
+import {
+  BrewdudeIoApiSharedServicesModule,
+  PrismaService,
+} from '@brewdude/brewdude-io-api/shared/services';
 import { EMPTY, from, of } from 'rxjs';
 import {
-  CreateAddressRequest,
-  CreateBreweryRequest,
+  UpsertAddressRequest,
+  UpsertBreweryRequest,
 } from '@brewdude/global/types';
 import { CreateBreweryCommand } from './create-brewery.command';
 
@@ -15,14 +18,14 @@ describe(CreateBreweryCommandHandler.name, () => {
   let handler: CreateBreweryCommandHandler;
   let breweryService: BreweryService;
 
-  const addressRequest = new CreateAddressRequest(
+  const addressRequest = new UpsertAddressRequest(
     'mock street address',
     'mock city',
     'mock state',
     'mock zip code'
   );
 
-  const breweryRequest = new CreateBreweryRequest(
+  const breweryRequest = new UpsertBreweryRequest(
     'mock brewery',
     addressRequest
   );
@@ -32,13 +35,17 @@ describe(CreateBreweryCommandHandler.name, () => {
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [CqrsModule, BrewdudeIoApiSharedServicesModule],
-      providers: [...handlers, BreweryService],
+      providers: [CreateBreweryCommandHandler, BreweryService],
     }).compile();
 
     breweryService = moduleRef.get<BreweryService>(BreweryService);
     handler = moduleRef.get<CreateBreweryCommandHandler>(
       CreateBreweryCommandHandler
     );
+
+    jest
+      .spyOn(moduleRef.get<PrismaService>(PrismaService), '$connect')
+      .mockResolvedValue();
   });
 
   it('should return a brewery upon successful creation', () => {

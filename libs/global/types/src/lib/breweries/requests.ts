@@ -1,16 +1,15 @@
-import { CreateAddressRequest } from '../addresses/requests';
+import { UpsertAddressRequest } from '../addresses/requests';
 import { IsNotEmpty, IsNotEmptyObject, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
 
-export class CreateBreweryRequest {
+export class UpsertBreweryRequest {
   @IsNotEmpty()
   name: string;
 
   @IsNotEmptyObject()
   @ValidateNested()
-  address: CreateAddressRequest;
+  address: UpsertAddressRequest;
 
-  constructor(private _name: string, private _address: CreateAddressRequest) {
+  constructor(private _name: string, private _address: UpsertAddressRequest) {
     this.name = this._name;
     this.address = this._address;
   }

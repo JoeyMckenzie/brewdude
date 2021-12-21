@@ -1,4 +1,4 @@
-import { CreateBreweryRequest } from '@brewdude/global/types';
+import { UpsertBreweryRequest } from '@brewdude/global/types';
 import { Body, Controller, Post } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { from } from 'rxjs';

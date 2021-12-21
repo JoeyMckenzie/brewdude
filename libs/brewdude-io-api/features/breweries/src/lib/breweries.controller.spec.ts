@@ -1,7 +1,7 @@
 import {
   BreweryResponse,
-  CreateAddressRequest,
-  CreateBreweryRequest,
+  UpsertAddressRequest,
+  UpsertBreweryRequest,
 } from '@brewdude/global/types';
 import { Test } from '@nestjs/testing';
 import { BreweriesController } from './breweries.controller';
@@ -37,14 +37,14 @@ describe(BreweriesController.name, () => {
         },
       } as BreweryResponse);
 
-      const addressRequest = new CreateAddressRequest(
+      const addressRequest = new UpsertAddressRequest(
         '1707 Whistling Dr.',
         'Redding',
         'CA',
         '96003'
       );
 
-      const breweryRequest = new CreateBreweryRequest(
+      const breweryRequest = new UpsertBreweryRequest(
         'Fall River Brewery',
         addressRequest
       );

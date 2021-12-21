@@ -1,5 +1,5 @@
 import { PrismaService } from '@brewdude/brewdude-io-api/shared/services';
-import { CreateBreweryRequest, SortOrder } from '@brewdude/global/types';
+import { UpsertBreweryRequest, SortOrder } from '@brewdude/global/types';
 import { Injectable, Logger } from '@nestjs/common';
 import { catchError, EMPTY, from, map } from 'rxjs';
 
@@ -52,7 +52,23 @@ export class BreweryService {
     );
   }
 
-  getBreweries(limit: number, offset: number, sort: SortOrder) {
+  peekBrewery(id: number) {
+    return from(
+      this.prisma.brewery.count({
+        where: {
+          id,
+        },
+      })
+    ).pipe(
+      catchError((error) => {
+        this.logger.error(`An error occurred while peeking brewery ${id}.`);
+        this.logger.error(error);
+        return EMPTY;
+      })
+    );
+  }
+
+  getBreweries(limit: number, offset: number, sortOrder: SortOrder) {
     return from(
       this.prisma.brewery.findMany({
         include: {
@@ -69,6 +85,9 @@ export class BreweryService {
         },
         take: limit,
         skip: offset,
+        orderBy: {
+          name: sortOrder,
+        },
       })
     ).pipe(
       catchError((error) => {
@@ -79,7 +98,7 @@ export class BreweryService {
     );
   }
 
-  createBrewery(request: CreateBreweryRequest, currentDateTime: Date) {
+  createBrewery(request: UpsertBreweryRequest, currentDateTime: Date) {
     return from(
       this.prisma.brewery.create({
         data: {
@@ -110,6 +129,50 @@ export class BreweryService {
     ).pipe(
       catchError((error) => {
         this.logger.error('An error occurred while creating brewery.');
+        this.logger.error(error);
+        return EMPTY;
+      })
+    );
+  }
+
+  updateBrewery(
+    request: UpsertBreweryRequest,
+    currentDateTime: Date,
+    id: number
+  ) {
+    return from(
+      this.prisma.brewery.update({
+        data: {
+          createdAt: currentDateTime,
+          updatedAt: currentDateTime,
+          name: request.name,
+          address: {
+            create: {
+              ...request.address,
+              createdAt: currentDateTime,
+              updatedAt: currentDateTime,
+            },
+          },
+        },
+        include: {
+          address: {
+            select: {
+              streetAddress: true,
+              streetAddressExtended: true,
+              city: true,
+              state: true,
+              zipCode: true,
+              zipCodeExtension: true,
+            },
+          },
+        },
+        where: {
+          id,
+        },
+      })
+    ).pipe(
+      catchError((error) => {
+        this.logger.error('An error occurred while updating brewery.');
         this.logger.error(error);
         return EMPTY;
       })

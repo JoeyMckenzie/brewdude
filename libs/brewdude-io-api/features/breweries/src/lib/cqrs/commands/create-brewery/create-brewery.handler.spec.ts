@@ -6,8 +6,8 @@ import { CreateBreweryCommandHandler } from './create-brewery.handler';
 import { BrewdudeIoApiSharedServicesModule } from '@brewdude/brewdude-io-api/shared/services';
 import { EMPTY, from, of } from 'rxjs';
 import {
-  CreateAddressRequest,
-  CreateBreweryRequest,
+  UpsertAddressRequest,
+  UpsertBreweryRequest,
 } from '@brewdude/global/types';
 import { CreateBreweryCommand } from './create-brewery.command';
 
@@ -15,14 +15,14 @@ describe(CreateBreweryCommandHandler.name, () => {
   let handler: CreateBreweryCommandHandler;
   let breweryService: BreweryService;
 
-  const addressRequest = new CreateAddressRequest(
+  const addressRequest = new UpsertAddressRequest(
     'mock street address',
     'mock city',
     'mock state',
     'mock zip code'
   );
 
-  const breweryRequest = new CreateBreweryRequest(
+  const breweryRequest = new UpsertBreweryRequest(
     'mock brewery',
     addressRequest
   );

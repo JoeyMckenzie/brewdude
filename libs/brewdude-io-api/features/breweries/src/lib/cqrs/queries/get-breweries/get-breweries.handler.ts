@@ -1,4 +1,4 @@
-import { BreweryListResponse, BreweryResponse } from '@brewdude/global/types';
+import { BreweryListResponse } from '@brewdude/global/types';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { firstValueFrom, map } from 'rxjs';
@@ -12,24 +12,24 @@ export class GetBreweriesQueryHandler
   constructor(private breweryService: BreweryService) {}
 
   execute(query: GetBreweriesQuery): Promise<BreweryListResponse> {
-    const { breweryId } = query;
+    const { limit, offset, sort } = query;
 
-    if (isNaN(+breweryId)) {
+    if (isNaN(+limit) || isNaN(+offset)) {
       throw new HttpException(
-        'Invalid brewery ID was passed on the request.',
+        'Invalid limit or offset values were passed in the request.',
         HttpStatus.BAD_REQUEST
       );
     }
 
     return firstValueFrom(
-      this.breweryService.getBrewery(+breweryId).pipe(
-        map((brewery) => {
-          if (!brewery) {
+      this.breweryService.getBreweries(+limit, +offset, sort).pipe(
+        map((breweries) => {
+          if (!breweries) {
             throw new HttpException('Brewery not found.', HttpStatus.NOT_FOUND);
           }
 
           return {
-            brewery: {
+            breweries: breweries.map((brewery) => ({
               id: brewery.id,
               name: brewery.name,
               address: {
@@ -41,8 +41,8 @@ export class GetBreweriesQueryHandler
                 zipCode: brewery.address.zipCode,
                 zipCodeExtension: brewery.address.zipCodeExtension ?? '',
               },
-            },
-          } as BreweryResponse;
+            })),
+          } as BreweryListResponse;
         })
       )
     );
