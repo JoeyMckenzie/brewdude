@@ -5,11 +5,13 @@ import { BrewdudeIoApiFeaturesBreweriesModule } from '@brewdude/brewdude-io-api/
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { BrewdudeIoApiFeaturesUsersModule } from '@brewdude/brewdude-io-api/features/users';
 
 @Module({
   imports: [
     BrewdudeIoApiSharedServicesModule,
     BrewdudeIoApiFeaturesBreweriesModule,
+    BrewdudeIoApiFeaturesUsersModule,
     ConfigModule.forRoot(),
   ],
   controllers: [AppController],

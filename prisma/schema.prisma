@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,78 +8,142 @@ datasource db {
 }
 
 model Address {
-  id                     Int      @id @default(autoincrement())
-  createdAt              DateTime @default(now()) @map("created_at")
-  updatedAt              DateTime @updatedAt @map("updated_at")
-  streetAddress          String   @map("street_address")
+  id                    String   @id @default(uuid())
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+  streetAddress         String   @map("street_address")
   streetAddressExtended String?  @map("street_address_extended")
-  city                   String   @db.VarChar(255)
-  state                  String   @db.VarChar(2)
-  zipCode                String   @map("zip_code") @db.VarChar(5)
-  zipCodeExtension       String?  @map("zip_code_extension") @db.VarChar(5)
-  brewery                Brewery?
+  city                  String   @db.VarChar(255)
+  state                 String   @db.VarChar(2)
+  zipCode               String   @map("zip_code") @db.VarChar(5)
+  zipCodeExtension      String?  @map("zip_code_extension") @db.VarChar(5)
+  brewery               Brewery?
 
   @@map("addresses")
 }
 
 model Brewery {
-  id          Int          @id @default(autoincrement())
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @updatedAt @map("updated_at")
-  name        String       @db.VarChar(255)
-  addressId   Int          @unique @map("address_id")
-  address     Address      @relation(fields: [addressId], references: [id])
+  id          String           @id @default(uuid())
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+  name        String           @db.VarChar(255)
+  addressId   String           @unique @map("address_id")
+  address     Address          @relation(fields: [addressId], references: [id])
   beers       Beer[]
+  comments    BreweryComment[]
   breweryTags BreweryTag[]
 
   @@map("breweries")
 }
 
 model Beer {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  name      String    @db.VarChar(255)
+  id        String        @id @default(uuid())
+  createdAt DateTime      @default(now()) @map("created_at")
+  updatedAt DateTime      @updatedAt @map("updated_at")
+  name      String        @db.VarChar(255)
   ibu       Int
   abv       Decimal
-  breweryId Int       @map("brewery_id")
-  brewery   Brewery   @relation(fields: [breweryId], references: [id])
+  breweryId String        @map("brewery_id")
+  style     BeerStyle
+  brewery   Brewery       @relation(fields: [breweryId], references: [id])
+  comments  BeerComment[]
   beerTags  BeerTag[]
-  style BeerStyle
 
   @@map("beers")
 }
 
-model BeerTag {
-  id        Int      @id @default(autoincrement())
+model User {
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  tag       VoteTag
-  beerId    Int      @map("beer_id")
+  email     String   @db.VarChar(32)
+  username  String   @db.VarChar
+  salt      String   @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  verified  Boolean
+  role      UserRole
+  profile   Profile?
+
+  @@map("users")
+}
+
+model Profile {
+  id              String           @id @default(uuid())
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+  userId          String           @unique
+  user            User             @relation(fields: [userId], references: [id])
+  beerComments    BeerComment[]
+  beerTags        BeerTag[]
+  breweryComments BreweryComment[]
+  breweryTags     BreweryTag[]
+
+  @@map("profiles")
+}
+
+model BeerComment {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  text      String   @db.VarChar(512)
+  beerId    String
+  profileId String
   beer      Beer     @relation(fields: [beerId], references: [id])
+  profile   Profile  @relation(fields: [profileId], references: [id])
+
+  @@map("beer_comments")
+}
+
+model BreweryComment {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  text      String   @db.VarChar(512)
+  breweryId String
+  profileId String
+  brewery   Brewery  @relation(fields: [breweryId], references: [id])
+  profile   Profile  @relation(fields: [profileId], references: [id])
+
+  @@map("brewery_comments")
+}
+
+model BeerTag {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  tag       ActionTag
+  beerId    String    @map("beer_id")
+  profileId String    @map("profile_id")
+  beer      Beer      @relation(fields: [beerId], references: [id])
+  profile   Profile   @relation(fields: [profileId], references: [id])
 
   @@map("beer_tags")
 }
 
 model BreweryTag {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  tag       VoteTag
-  breweryId Int      @map("beer_id")
-  brewery   Brewery  @relation(fields: [breweryId], references: [id])
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  tag       ActionTag
+  breweryId String    @map("beer_id")
+  profileId String    @map("profile_id")
+  brewery   Brewery   @relation(fields: [breweryId], references: [id])
+  profile   Profile   @relation(fields: [profileId], references: [id])
 
   @@map("brewery_tags")
 }
 
-enum VoteTag {
-  Upvote
-  Downvote
+enum ActionTag {
+  Upvote @map("UPVOTE")
+  Downvote @map("DOWNVOTE")
+  Comment @map("COMMENT")
+  Create @map("CREATE")
+  Update @map("UPDATE")
+  Remove @map("REMOVE")
 
   @@map("vote_tag")
 }
 
-// Note: keep this in sync with beers/enums.ts
 enum BeerStyle {
   Lager @map("LAGER")
   PaleAle @map("PALE_ALE")
@@ -93,4 +154,12 @@ enum BeerStyle {
   Stout @map("STOUT")
 
   @@map("beer_style")
+}
+
+enum UserRole {
+  DrinkingBuddy @map("DRINKING_BUDDY")
+  Bartender @map("BARTENDER")
+  Brewmaster @map("BREWMASTER")
+
+  @@map("user_role")
 }

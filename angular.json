@@ -203,6 +203,29 @@
       },
       "tags": ["scope:brewdude-io-api-features-beers"]
     },
+    "brewdude-io-api-features-users": {
+      "root": "libs/brewdude-io-api/features/users",
+      "sourceRoot": "libs/brewdude-io-api/features/users/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/brewdude-io-api/features/users/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/brewdude-io-api/features/users"],
+          "options": {
+            "jestConfig": "libs/brewdude-io-api/features/users/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["scope:brewdude-io-api-features-users"]
+    },
     "brewdude-io-api-shared-services": {
       "root": "libs/brewdude-io-api/shared/services",
       "sourceRoot": "libs/brewdude-io-api/shared/services/src",

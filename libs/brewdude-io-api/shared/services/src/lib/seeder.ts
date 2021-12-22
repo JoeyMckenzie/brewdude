@@ -9,7 +9,7 @@ export class Seeder {
 
   seedUsers() {
     return from(this.prisma.address.count()).pipe(
-      filter((count: number) => count > 0),
+      filter((count: number) => count === 0),
       mergeMap(() =>
         from(
           this.prisma.address.create({

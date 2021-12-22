@@ -21,6 +21,9 @@
       "@brewdude/brewdude-io-api/features/breweries": [
         "libs/brewdude-io-api/features/breweries/src/index.ts"
       ],
+      "@brewdude/brewdude-io-api/features/users": [
+        "libs/brewdude-io-api/features/users/src/index.ts"
+      ],
       "@brewdude/brewdude-io-api/shared/services": [
         "libs/brewdude-io-api/shared/services/src/index.ts"
       ],

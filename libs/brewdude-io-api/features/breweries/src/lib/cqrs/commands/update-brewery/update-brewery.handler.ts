@@ -40,7 +40,19 @@ export class UpdateBreweryCommandHandler
                 }
 
                 return {
-                  brewery,
+                  brewery: {
+                    id: brewery.id,
+                    name: brewery.name,
+                    address: {
+                      streetAddress: brewery.address.streetAddress,
+                      streetAddressExtended:
+                        brewery.address.streetAddressExtended ?? '',
+                      city: brewery.address.city,
+                      state: brewery.address.state,
+                      zipCode: brewery.address.zipCode,
+                      zipCodeExtension: brewery.address.zipCodeExtension ?? '',
+                    },
+                  },
                 } as BreweryResponse;
               })
             );

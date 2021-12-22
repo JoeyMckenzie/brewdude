@@ -1,7 +1,7 @@
 import { AddressDto } from '../addresses/dtos';
 
 export interface BreweryDto {
-  id: number;
+  id: string;
   name: string;
   address: AddressDto;
 }

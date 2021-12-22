@@ -1,8 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { CqrsModule } from '@nestjs/cqrs';
-import { handlers } from '../..';
 import { BreweryService } from '../../../services/brewery.service';
-import { CreateBreweryCommandHandler } from './create-brewery.handler';
+import { UpdateBreweryCommandHandler } from './update-brewery.handler';
 import {
   BrewdudeIoApiSharedServicesModule,
   PrismaService,
@@ -12,10 +11,10 @@ import {
   UpsertAddressRequest,
   UpsertBreweryRequest,
 } from '@brewdude/global/types';
-import { CreateBreweryCommand } from './create-brewery.command';
+import { UpdateBreweryCommand } from './update-brewery.command';
 
-describe(CreateBreweryCommandHandler.name, () => {
-  let handler: CreateBreweryCommandHandler;
+describe(UpdateBreweryCommandHandler.name, () => {
+  let handler: UpdateBreweryCommandHandler;
   let breweryService: BreweryService;
 
   const addressRequest = new UpsertAddressRequest(
@@ -30,17 +29,17 @@ describe(CreateBreweryCommandHandler.name, () => {
     addressRequest
   );
 
-  const command = new CreateBreweryCommand(breweryRequest);
+  const command = new UpdateBreweryCommand(1, breweryRequest);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [CqrsModule, BrewdudeIoApiSharedServicesModule],
-      providers: [CreateBreweryCommandHandler, BreweryService],
+      providers: [UpdateBreweryCommandHandler, BreweryService],
     }).compile();
 
     breweryService = moduleRef.get<BreweryService>(BreweryService);
-    handler = moduleRef.get<CreateBreweryCommandHandler>(
-      CreateBreweryCommandHandler
+    handler = moduleRef.get<UpdateBreweryCommandHandler>(
+      UpdateBreweryCommandHandler
     );
 
     jest
@@ -48,8 +47,12 @@ describe(CreateBreweryCommandHandler.name, () => {
       .mockResolvedValue();
   });
 
-  it('should return a brewery upon successful creation', () => {
+  it('should return a brewery upon successful update', () => {
     // Arrange
+    const peekSpy = jest
+      .spyOn(breweryService, 'peekBrewery')
+      .mockReturnValue(of());
+
     const createSpy = jest
       .spyOn(breweryService, 'createBrewery')
       .mockReturnValue(of());

@@ -22,7 +22,7 @@ export class GetBreweryQueryHandler
     }
 
     return firstValueFrom(
-      this.breweryService.getBrewery(+breweryId).pipe(
+      this.breweryService.getBrewery(breweryId).pipe(
         map((brewery) => {
           if (!brewery) {
             throw new HttpException('Brewery not found.', HttpStatus.NOT_FOUND);

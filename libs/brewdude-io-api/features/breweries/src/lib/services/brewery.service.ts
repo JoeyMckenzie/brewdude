@@ -9,7 +9,7 @@ export class BreweryService {
 
   constructor(private prisma: PrismaService) {}
 
-  getBrewery(id: number) {
+  getBrewery(id: string) {
     return from(
       this.prisma.brewery.findFirst({
         where: {
@@ -52,7 +52,7 @@ export class BreweryService {
     );
   }
 
-  peekBrewery(id: number) {
+  peekBrewery(id: string) {
     return from(
       this.prisma.brewery.count({
         where: {
@@ -138,7 +138,7 @@ export class BreweryService {
   updateBrewery(
     request: UpsertBreweryRequest,
     currentDateTime: Date,
-    id: number
+    id: string
   ) {
     return from(
       this.prisma.brewery.update({
