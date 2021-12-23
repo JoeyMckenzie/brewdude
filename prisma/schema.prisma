@@ -11,6 +11,7 @@ model Address {
   id                    String   @id @default(uuid())
   createdAt             DateTime @default(now()) @map("created_at")
   updatedAt             DateTime @updatedAt @map("updated_at")
+  imageUrl              String   @map("image_url") @db.VarChar(1024)
   streetAddress         String   @map("street_address")
   streetAddressExtended String?  @map("street_address_extended")
   city                  String   @db.VarChar(255)
@@ -26,6 +27,7 @@ model Brewery {
   id          String           @id @default(uuid())
   createdAt   DateTime         @default(now()) @map("created_at")
   updatedAt   DateTime         @updatedAt @map("updated_at")
+  imageUrl    String           @map("image_url") @db.VarChar(1024)
   name        String           @db.VarChar(255)
   addressId   String           @unique @map("address_id")
   address     Address          @relation(fields: [addressId], references: [id])
@@ -40,6 +42,7 @@ model Beer {
   id        String        @id @default(uuid())
   createdAt DateTime      @default(now()) @map("created_at")
   updatedAt DateTime      @updatedAt @map("updated_at")
+  imageUrl  String        @map("image_url") @db.VarChar(1024)
   name      String        @db.VarChar(255)
   ibu       Int
   abv       Decimal
@@ -71,7 +74,7 @@ model Profile {
   id              String           @id @default(uuid())
   createdAt       DateTime         @default(now()) @map("created_at")
   updatedAt       DateTime         @updatedAt @map("updated_at")
-  userId          String           @unique
+  userId          String           @unique @map("user_id")
   user            User             @relation(fields: [userId], references: [id])
   beerComments    BeerComment[]
   beerTags        BeerTag[]
@@ -86,8 +89,8 @@ model BeerComment {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   text      String   @db.VarChar(512)
-  beerId    String
-  profileId String
+  beerId    String   @map("beer_id")
+  profileId String   @map("profile_id")
   beer      Beer     @relation(fields: [beerId], references: [id])
   profile   Profile  @relation(fields: [profileId], references: [id])
 
@@ -99,8 +102,8 @@ model BreweryComment {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   text      String   @db.VarChar(512)
-  breweryId String
-  profileId String
+  breweryId String   @map("brewery_id")
+  profileId String   @map("profile_id")
   brewery   Brewery  @relation(fields: [breweryId], references: [id])
   profile   Profile  @relation(fields: [profileId], references: [id])
 
@@ -134,32 +137,32 @@ model BreweryTag {
 }
 
 enum ActionTag {
-  Upvote @map("UPVOTE")
-  Downvote @map("DOWNVOTE")
-  Comment @map("COMMENT")
-  Create @map("CREATE")
-  Update @map("UPDATE")
-  Remove @map("REMOVE")
+  Upvote    @map("UPVOTE")
+  Downvote  @map("DOWNVOTE")
+  Comment   @map("COMMENT")
+  Create    @map("CREATE")
+  Update    @map("UPDATE")
+  Remove    @map("REMOVE")
 
   @@map("vote_tag")
 }
 
 enum BeerStyle {
-  Lager @map("LAGER")
-  PaleAle @map("PALE_ALE")
-  Ipa @map("IPA")
-  DoubleIpa @map("DOUBLE_IPA")
-  TripleIpa @map("TRIPLE_IPA")
-  AmberAle @map("AMBER_ALE")
-  Stout @map("STOUT")
+  Lager      @map("LAGER")
+  PaleAle    @map("PALE_ALE")
+  Ipa        @map("IPA")
+  DoubleIpa  @map("DOUBLE_IPA")
+  TripleIpa  @map("TRIPLE_IPA")
+  AmberAle   @map("AMBER_ALE")
+  Stout      @map("STOUT")
 
   @@map("beer_style")
 }
 
 enum UserRole {
-  DrinkingBuddy @map("DRINKING_BUDDY")
-  Bartender @map("BARTENDER")
-  Brewmaster @map("BREWMASTER")
+  DrinkingBuddy  @map("DRINKING_BUDDY")
+  Bartender      @map("BARTENDER")
+  Brewmaster     @map("BREWMASTER")
 
   @@map("user_role")
 }

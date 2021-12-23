@@ -27,6 +27,13 @@ export class LoginUserCommandHandler
             );
           }
 
+          if (!user.verified) {
+            throw new HttpException(
+              'User has not verified their email.',
+              HttpStatus.FORBIDDEN
+            );
+          }
+
           return user;
         }),
         mergeMap((user) =>

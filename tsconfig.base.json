@@ -15,6 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@brewdude/brewdude-io-api/features/authentication": [
+        "libs/brewdude-io-api/features/authentication/src/index.ts"
+      ],
       "@brewdude/brewdude-io-api/features/beers": [
         "libs/brewdude-io-api/features/beers/src/index.ts"
       ],

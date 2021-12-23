@@ -29,7 +29,7 @@ describe(UpdateBreweryCommandHandler.name, () => {
     addressRequest
   );
 
-  const command = new UpdateBreweryCommand(1, breweryRequest);
+  const command = new UpdateBreweryCommand('1', breweryRequest);
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({

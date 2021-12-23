@@ -4,9 +4,14 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { BreweriesController } from './breweries.controller';
 import { handlers } from './cqrs';
 import { BreweryService } from './services/brewery.service';
+import { BrewdudeIoApiFeaturesAuthenticationModule } from '@brewdude/brewdude-io-api/features/authentication';
 
 @Module({
-  imports: [CqrsModule, BrewdudeIoApiSharedServicesModule],
+  imports: [
+    CqrsModule,
+    BrewdudeIoApiSharedServicesModule,
+    BrewdudeIoApiFeaturesAuthenticationModule,
+  ],
   controllers: [BreweriesController],
   providers: [...handlers, BreweryService],
 })

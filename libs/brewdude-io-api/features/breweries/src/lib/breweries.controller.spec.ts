@@ -32,7 +32,7 @@ describe(BreweriesController.name, () => {
       // Arrange
       jest.spyOn(commandBus, 'execute').mockResolvedValue({
         brewery: {
-          id: 1,
+          id: '1',
           name: 'Fall River Brewery',
         },
       } as BreweryResponse);

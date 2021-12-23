@@ -155,6 +155,31 @@
       },
       "tags": ["scope:brewdude-io-api"]
     },
+    "brewdude-io-api-features-authentication": {
+      "root": "libs/brewdude-io-api/features/authentication",
+      "sourceRoot": "libs/brewdude-io-api/features/authentication/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": [
+              "libs/brewdude-io-api/features/authentication/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/brewdude-io-api/features/authentication"],
+          "options": {
+            "jestConfig": "libs/brewdude-io-api/features/authentication/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": ["scope:brewdude-io-api-features-authentication"]
+    },
     "brewdude-io-api-features-beers": {
       "root": "libs/brewdude-io-api/features/beers",
       "sourceRoot": "libs/brewdude-io-api/features/beers/src",

@@ -2,10 +2,11 @@ import { UserResponse } from '@brewdude/global/types';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { RegisterUserCommand } from './register-user.command';
 import { genSalt, hash } from 'bcrypt';
-import { catchError, firstValueFrom, from, map, mergeMap } from 'rxjs';
+import { catchError, firstValueFrom, from, map, mergeMap, tap } from 'rxjs';
 import { UsersService } from '../../../services/users.service';
 import { UserRole } from '@prisma/client';
 import { HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { TokenService } from '@brewdude/brewdude-io-api/features/authentication';
 
 @CommandHandler(RegisterUserCommand)
 export class RegisterUserCommandHandler
@@ -13,7 +14,10 @@ export class RegisterUserCommandHandler
 {
   private readonly logger = new Logger(RegisterUserCommandHandler.name);
 
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private tokenService: TokenService
+  ) {}
 
   execute(command: RegisterUserCommand): Promise<UserResponse> {
     const { email, username, password } = command;
@@ -46,14 +50,26 @@ export class RegisterUserCommandHandler
           )
         ),
         // Verify the response and map to a user view
-        map((user) => {
+        tap((user) => {
           if (!user) {
             throw new HttpException(
               'An unexpected error occurred while registering user.',
               HttpStatus.INTERNAL_SERVER_ERROR
             );
           }
-
+        }),
+        mergeMap((user) =>
+          this.tokenService
+            .generateToken(
+              user.id,
+              user.username,
+              user.email,
+              user.verified,
+              user.role
+            )
+            .pipe(map((token) => ({ user, token })))
+        ),
+        map(({ user, token }) => {
           const { email, username, role, verified } = user;
 
           this.logger.log(
@@ -66,6 +82,7 @@ export class RegisterUserCommandHandler
               username,
               role,
               verified,
+              accessToken: token,
             },
           } as UserResponse;
         }),

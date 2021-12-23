@@ -4,19 +4,38 @@ import {
   BreweryListResponse,
   SortOrder,
 } from '@brewdude/global/types';
-import { Body, Controller, Get, Logger, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Post,
+  UseGuards,
+  Version,
+} from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateBreweryCommand } from './cqrs';
 import { GetBreweryQuery } from './cqrs/queries/get-brewery/get-brewery.query';
 import { from, Observable } from 'rxjs';
 import { GetBreweriesQuery } from './cqrs/queries/get-breweries/get-breweries.query';
+import {
+  PassportJwtAuthGuard,
+  Scopes,
+  ScopesGuard,
+} from '@brewdude/brewdude-io-api/features/authentication';
 
-@Controller('breweries')
+@Controller({
+  path: 'breweries',
+  version: '1',
+})
 export class BreweriesController {
   private readonly logger = new Logger(BreweriesController.name);
 
   constructor(private commandBus: CommandBus, private queryBus: QueryBus) {}
 
+  @UseGuards(PassportJwtAuthGuard, ScopesGuard)
+  @Scopes('brewery:create')
   @Post()
   createBrewery(
     @Body() request: UpsertBreweryRequest

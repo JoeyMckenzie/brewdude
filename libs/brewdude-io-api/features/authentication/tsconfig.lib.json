@@ -12,9 +12,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "exclude": ["**/*.spec.ts", "**/*.test.ts"],
-  "include": [
-    "**/*.ts",
-    "../authentication/src/lib/services/token.service.ts",
-    "../authentication/src/lib/services/token.service.ts"
-  ]
+  "include": ["**/*.ts", "../users/src/lib/services/token.service.ts"]
 }

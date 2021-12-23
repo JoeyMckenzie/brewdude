@@ -5,4 +5,5 @@ export interface UserDto {
   username: string;
   verified: boolean;
   role: UserRole;
+  accessToken: string;
 }

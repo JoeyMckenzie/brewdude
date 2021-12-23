@@ -10,6 +10,7 @@ export * from './beers/enums';
 export * from './users/requests';
 export * from './users/responses';
 export * from './users/enums';
+export * from './users/dtos';
 
 export * from './shared/common';
 export * from './shared/responses';

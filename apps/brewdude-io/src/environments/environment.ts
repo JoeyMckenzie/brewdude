@@ -6,7 +6,7 @@ import { EnvironmentConfiguration } from '@brewdude/brewdude-io/shared/types';
 
 export const environment: EnvironmentConfiguration = {
   production: false,
-  apiBaseUrl: '',
+  apiBaseUrl: 'https://localhost:3333/api/v1',
 };
 
 /*
